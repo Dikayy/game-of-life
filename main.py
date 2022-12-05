@@ -1,7 +1,8 @@
 import pygame
 
-WIDTH, HEIGHT = 900, 500
+WIDTH, HEIGHT = 900, 700
 FPS = 60
+#grid = []
 
 pygame.init()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -20,12 +21,23 @@ class Cell:
         
 
 def init_grid(size):
-    pass
+    grid = []
+    border = 1
+    cellSize = 20
+
+    for i in range(size):
+        column = []
+        grid.append(column)
+        for j in range(size):
+            xPos = border + i * cellSize + i * border
+            yPos = border + j * cellSize + j * border
+            column.append(Cell(xPos, yPos, cellSize))
 
 def main():
     clock = pygame.time.Clock()
 
-    cell = Cell(100, 100, 10)
+    WIN.fill((158, 158, 158))
+    init_grid(30)
 
     run = True
     while run:
