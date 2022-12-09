@@ -13,22 +13,6 @@ class Game:
         self.grid = self.init_grid(30)
         self.main_loop()
 
-    def main_loop(self):
-        clock = pygame.time.Clock()
-        run = True
-        while run:
-            clock.tick(self.FPS)
-            
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    self.click_cell(pygame.mouse.get_pos())
-            
-            pygame.display.update()
-        
-        pygame.quit()
-
     def click_cell(self, pos):
         for column in self.grid:
             for cell in column:
@@ -50,4 +34,20 @@ class Game:
                 column.append(Cell(self.WIN, xPos, yPos, cellSize))
         
         return grid
+    
+    def main_loop(self):
+        clock = pygame.time.Clock()
+        run = True
+        while run:
+            clock.tick(self.FPS)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    self.click_cell(pygame.mouse.get_pos())
+            
+            pygame.display.update()
+        
+        pygame.quit()
     
