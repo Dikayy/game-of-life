@@ -4,6 +4,8 @@ from cell import Cell
 class Game:
     WIDTH, HEIGHT = 900, 700
     FPS = 60
+    simRunning = False
+    stepTime = 150
 
     def __init__(self):
         self.WIN = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
@@ -40,13 +42,21 @@ class Game:
             
             x += 1
 
+    def set_sim_running(self):
+        nextStepEvent = pygame.event.Event(pygame.USEREVENT + 0)
+        if not self.simRunning:
+            pygame.time.set_timer(nextStepEvent, self.stepTime)
+            self.simRunning = True
+        else:
+            pygame.time.set_timer(nextStepEvent, 0)
+            self.simRunning = False
+
     def click_cell(self, pos):
         for column in self.grid:
             for cell in column:
                 if cell.is_in_pos(pos):
                     alive = cell.alive
                     cell.set_alive(not alive)
-                    #print(cell.get_neighbours(self.grid))
 
     def init_grid(self, size):
         grid = []
@@ -76,7 +86,9 @@ class Game:
                     self.click_cell(pygame.mouse.get_pos())
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        self.next_step()
+                        self.set_sim_running()
+                elif event.type == pygame.USEREVENT + 0:
+                    self.next_step()
             
             pygame.display.update()
         
