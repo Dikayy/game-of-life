@@ -13,12 +13,40 @@ class Game:
         self.grid = self.init_grid(30)
         self.main_loop()
 
+    def next_step(self):
+        nextGrid = []
+        for column in self.grid:
+            nextGridColumn = []
+            nextGrid.append(nextGridColumn)
+            for cell in column:
+                neighbours = cell.get_neighbours(self.grid)
+                if not cell.alive and neighbours == 3:
+                    nextGridColumn.append(True)
+                elif cell.alive and neighbours < 2:
+                    nextGridColumn.append(False)
+                elif cell.alive and (neighbours == 2 or neighbours == 3):
+                    nextGridColumn.append(True)
+                elif cell.alive and neighbours > 3:
+                    nextGridColumn.append(False)
+                else:
+                    nextGridColumn.append(False)
+        
+        x = 0
+        for column in self.grid:
+            y = 0
+            for cell in column:
+                cell.set_alive(nextGrid[x][y])
+                y += 1
+            
+            x += 1
+
     def click_cell(self, pos):
         for column in self.grid:
             for cell in column:
                 if cell.is_in_pos(pos):
                     alive = cell.alive
                     cell.set_alive(not alive)
+                    #print(cell.get_neighbours(self.grid))
 
     def init_grid(self, size):
         grid = []
@@ -31,7 +59,7 @@ class Game:
             for j in range(size):
                 xPos = border + i * cellSize + i * border
                 yPos = border + j * cellSize + j * border
-                column.append(Cell(self.WIN, xPos, yPos, cellSize))
+                column.append(Cell(self.WIN, xPos, yPos, i, j, cellSize))
         
         return grid
     
@@ -46,8 +74,10 @@ class Game:
                     run = False
                 elif event.type == pygame.MOUSEBUTTONUP:
                     self.click_cell(pygame.mouse.get_pos())
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.next_step()
             
             pygame.display.update()
         
         pygame.quit()
-    
