@@ -2,17 +2,17 @@ import pygame
 from cell import Cell
 
 class Game:
-    WIDTH, HEIGHT = 900, 700
+    WIDTH, HEIGHT = 1051, 1051
     FPS = 60
     simRunning = False
-    stepTime = 150
+    stepTime = 120
 
     def __init__(self):
         self.WIN = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Conway's Game Of Life")
 
         self.WIN.fill((158, 158, 158))
-        self.grid = self.init_grid(30)
+        self.grid = self.init_grid(50)
         self.main_loop()
 
     def next_step(self):
